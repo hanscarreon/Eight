@@ -14,11 +14,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
+import com.example.eight.Adapters.PMAdapter;
+import com.example.eight.Adapters.PlayerMediaAdapter;
 import com.example.eight.Adapters.PlayersAdapter;
 import com.example.eight.Adapters.TeamAdapter;
+import com.example.eight.ModelList.PlayerMediaModel;
 import com.example.eight.ModelList.PlayerModel;
 import com.example.eight.R;
+import com.example.eight.ViewModel.PlayerVidViewModel;
 import com.example.eight.ViewModel.PlayerViewModel;
 import com.example.eight.ViewModel.TeamViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +34,7 @@ import java.util.Set;
 
 public class Team extends AppCompatActivity {
 
+    private PlayerVidViewModel pvidm;
     private TeamViewModel tvw;
     public static RecyclerView pView;
     public static RecyclerView tView;
@@ -69,16 +75,36 @@ public class Team extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+        pvidm = ViewModelProviders.of(this).get(PlayerVidViewModel.class);
+        pvidm.init();
+
+        pvidm.getPlayersVidteam().observe(this, new Observer<List<PlayerMediaModel.Datum>>() {
+            @Override
+            public void onChanged(@Nullable List<PlayerMediaModel.Datum> playersVidteam) {
+                getPlayers(playersVidteam);
+                tAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void getTeam(List<PlayerModel.Datum> team)
     {
         pView = findViewById(R.id.teamView);
-        rvLayout = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+        rvLayout = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         pView.setLayoutManager(rvLayout);
         mAdapter = new TeamAdapter(this,team);
         pView.setAdapter(mAdapter);
 
+    }
+
+    private void getPlayers(List<PlayerMediaModel.Datum> playersVidteam)
+    {
+        tView = findViewById(R.id.mediaView);
+        tLayout = new LinearLayoutManager(this);
+        tView.setLayoutManager(tLayout);
+        tAdapter = new PMAdapter(this,playersVidteam);
+        tView.setAdapter(tAdapter);
     }
 
     private void navBottom()

@@ -40,6 +40,18 @@
                 android:layout_marginTop="10dp">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/teamView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mediaView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 </androidx.recyclerview.widget.RecyclerView>

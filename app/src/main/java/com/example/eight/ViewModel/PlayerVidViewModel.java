@@ -13,6 +13,7 @@ import java.util.List;
 public class PlayerVidViewModel extends ViewModel {
 
     private MutableLiveData<List<PlayerMediaModel.Datum>> players;
+    private MutableLiveData<List<PlayerMediaModel.Datum>> playersVid;
     private Repository mRepo;
 
     public void init(){
@@ -21,8 +22,12 @@ public class PlayerVidViewModel extends ViewModel {
         }
         mRepo = Repository.getInstance();
         players = mRepo.getPlayersVid();
+        playersVid = mRepo.getPlayersVidteam();
     }
     public LiveData<List<PlayerMediaModel.Datum>> getPlayersVid(){
         return players;
+    }
+    public LiveData<List<PlayerMediaModel.Datum>> getPlayersVidteam(){
+        return playersVid;
     }
 }

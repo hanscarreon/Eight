@@ -89,6 +89,25 @@ public class Repository {
         return data;
     }
 
+    public MutableLiveData<List<PlayerMediaModel.Datum>> getPlayersVidteam()
+    {
+        final MutableLiveData<List<PlayerMediaModel.Datum>> data = new MutableLiveData<>();
+
+        Call<PlayerMediaModel> call = rfit.retrofitPlayerVid().getPMedia("665");
+        call.enqueue(new Callback<PlayerMediaModel>() {
+            @Override
+            public void onResponse(Call<PlayerMediaModel> call, Response<PlayerMediaModel> response) {
+                data.setValue(response.body().getData());
+
+            }
+            @Override
+            public void onFailure(Call<PlayerMediaModel> call, Throwable t) {
+
+            }
+        });
+        return data;
+    }
+
     public MutableLiveData<List<LeaguesModel.Datum>> getLeague()
     {
         final MutableLiveData<List<LeaguesModel.Datum>> data = new MutableLiveData<>();
