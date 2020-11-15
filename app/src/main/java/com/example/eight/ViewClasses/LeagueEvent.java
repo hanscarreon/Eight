@@ -45,6 +45,7 @@ public class LeagueEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_league_event);
+        load();
         declare();
         init();
     }
@@ -59,8 +60,16 @@ public class LeagueEvent extends AppCompatActivity {
             public void onChanged(@Nullable List<ListLive.Datum> leagues) {
                 getLeagues(leagues);
                 mAdapter.notifyDataSetChanged();
+                pdLoading.dismiss();
             }
         });
+    }
+
+    private void load(){
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setMessage("\tPlease Wait...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
     }
 
     private void getLeagues(List<ListLive.Datum> leagues)

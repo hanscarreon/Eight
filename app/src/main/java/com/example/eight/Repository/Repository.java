@@ -97,6 +97,7 @@ public class Repository {
         call.enqueue(new Callback<PlayerMediaModel>() {
             @Override
             public void onResponse(Call<PlayerMediaModel> call, Response<PlayerMediaModel> response) {
+
                 data.setValue(response.body().getData());
 
             }

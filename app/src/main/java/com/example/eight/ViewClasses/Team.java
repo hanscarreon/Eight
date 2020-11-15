@@ -49,6 +49,7 @@ public class Team extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+        load();
         declare();
         initialize();
         navBottom();
@@ -58,6 +59,13 @@ public class Team extends AppCompatActivity {
     {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.three);
+    }
+
+    private void load(){
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setMessage("\tPlease Wait...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
     }
 
     private void declare()
@@ -84,6 +92,7 @@ public class Team extends AppCompatActivity {
             public void onChanged(@Nullable List<PlayerMediaModel.Datum> playersVidteam) {
                 getPlayers(playersVidteam);
                 tAdapter.notifyDataSetChanged();
+                pdLoading.dismiss();
             }
         });
     }

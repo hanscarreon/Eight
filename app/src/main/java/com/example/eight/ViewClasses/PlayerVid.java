@@ -38,14 +38,23 @@ public class PlayerVid extends AppCompatActivity {
     private CircleImageView profImg;
     private TextView profName,profPos,profNum,back;
     CountDownTimer countDownTimer;
-    ProgressDialog progressDialog;
+    private ProgressDialog pdLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_vid);
+        load();
         declare();
         init();
+    }
+
+    private void load()
+    {
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setMessage("\tPlease Wait...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
     }
 
     private void declare()
@@ -58,6 +67,7 @@ public class PlayerVid extends AppCompatActivity {
             public void onChanged(@Nullable List<PlayerMediaModel.Datum> playersVid) {
                 getPlayers(playersVid);
                 mAdapter.notifyDataSetChanged();
+                pdLoading.dismiss();
             }
         });
     }

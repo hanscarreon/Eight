@@ -41,6 +41,7 @@ public class Players extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players);
+        load();
         declare();
         initialize();
         navBottom();
@@ -62,8 +63,16 @@ public class Players extends AppCompatActivity {
             public void onChanged(@Nullable List<PlayerModel.Datum> players) {
                 getPlayers(players);
                 mAdapter.notifyDataSetChanged();
+                pdLoading.dismiss();
             }
         });
+    }
+
+    private void load(){
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setMessage("\tPlease Wait...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
     }
 
     private void getPlayers(List<PlayerModel.Datum> players)

@@ -47,6 +47,31 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/noEvent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cloud_off"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/none"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/bungeeregular"
+            android:text="No Current Live Matches"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
     <include
         layout="@layout/navbottom"
         android:layout_alignParentBottom="true"

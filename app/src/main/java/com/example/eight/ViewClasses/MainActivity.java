@@ -3,16 +3,23 @@ package com.example.eight.ViewClasses;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.eight.Adapters.EventsLive;
 import com.example.eight.ModelList.ListLive;
@@ -32,12 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pdLoading;
     private BottomNavigationView bottomNavigationView;
     CountDownTimer countDownTimer;
-    ProgressDialog progressDialog;
+    RelativeLayout noEvent;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        load();
         declare();
         initialize();
         navBottom();
@@ -59,15 +68,27 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<ListLive.Datum> nicePlaces) {
                 getLive(nicePlaces);
                 mAdapter.notifyDataSetChanged();
+                pdLoading.dismiss();
             }
         });
     }
 
+    private void load(){
+        pdLoading = new ProgressDialog(this);
+        pdLoading.setMessage("\tPlease Wait...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
+    }
+
     private void getLive(List<ListLive.Datum> nicePlaces)
     {
+        noEvent = findViewById(R.id.noEvent);
         pView = findViewById(R.id.mainView);
         rvLayout = new LinearLayoutManager(this);
         pView.setLayoutManager(rvLayout);
+        if(nicePlaces != null){
+            noEvent.setVisibility(View.GONE);
+        }
         mAdapter = new EventsLive(this,nicePlaces);
         pView.setAdapter(mAdapter);
     }
@@ -114,5 +135,50 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private AlertDialog AskOption()
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to Exit?")
+                .setIcon(R.drawable.ic_close_black)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog diaBox = AskOption();
+        diaBox.show();
+/*
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+            AskOption();
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);*/
+
     }
 }
